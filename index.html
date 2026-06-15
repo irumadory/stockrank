@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>YouTube 라이브 멀티뷰</title>
+<title>주식 라이브 랭킹 | StockRank</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -14,8 +14,6 @@
 }
 html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;overflow:hidden}
 .app{display:flex;flex-direction:column;height:100vh}
-
-/* HEADER */
 header{display:flex;align-items:center;gap:10px;padding:0 16px;height:50px;flex-shrink:0;background:var(--surface);border-bottom:2px solid var(--border)}
 .logo{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;color:var(--accent);letter-spacing:.08em;white-space:nowrap;flex-shrink:0}
 .logo em{color:var(--text-dim);font-style:normal;font-weight:400;font-size:11px;margin-left:3px}
@@ -23,169 +21,58 @@ header{display:flex;align-items:center;gap:10px;padding:0 16px;height:50px;flex-
 .live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 1.4s ease-in-out infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:var(--radius);font-size:12px;font-family:'Noto Sans KR',sans-serif;font-weight:600;cursor:pointer;border:none;transition:all .15s;white-space:nowrap;flex-shrink:0}
-.btn-red{background:var(--accent);color:#fff}.btn-red:hover{background:#ff5252}
 .btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border)}.btn-outline:hover{border-color:var(--accent2);color:var(--accent2)}
-.btn-green{background:transparent;color:var(--green);border:1.5px solid var(--green)}.btn-green:hover{background:var(--green);color:#000}
-.btn-sm{padding:4px 9px;font-size:11px}
-.admin-badge{font-size:10px;font-weight:700;color:var(--green);border:1.5px solid var(--green);border-radius:4px;padding:2px 7px;flex-shrink:0}
-input{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;font-family:'Noto Sans KR',sans-serif;padding:6px 11px;outline:none;transition:border-color .2s}
-input:focus{border-color:var(--accent)}
-input::placeholder{color:var(--text-muted)}
-
-/* CONTENT */
 .content{display:flex;flex:1;overflow:hidden;min-height:0}
-
-/* 랭킹 리스트 */
-.ranking-wrap{
-  flex:1;overflow-y:auto;padding:12px 16px;background:var(--bg);
-  display:flex;flex-direction:column;gap:8px;
-}
+.ranking-wrap{flex:1;overflow-y:auto;padding:12px 16px;background:var(--bg);display:flex;flex-direction:column;gap:8px}
 .ranking-wrap::-webkit-scrollbar{width:6px}
 .ranking-wrap::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
-
-/* 랭킹 카드 */
-.rank-card{
-  display:flex;align-items:center;gap:14px;
-  background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);
-  padding:12px 16px;transition:border-color .2s,transform .15s,box-shadow .15s;
-  cursor:pointer;
-}
+.rank-card{display:flex;align-items:center;gap:14px;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:12px 16px;transition:border-color .2s,transform .15s,box-shadow .15s;cursor:pointer}
 .rank-card:hover{border-color:var(--accent);transform:translateX(4px);box-shadow:0 4px 20px rgba(255,53,53,.12)}
-
-.rank-num{
-  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;
-  color:var(--text-muted);width:36px;text-align:center;flex-shrink:0;line-height:1;
-}
-.rank-num.top1{color:#FFD700;font-size:26px}
-.rank-num.top2{color:#C0C0C0;font-size:24px}
-.rank-num.top3{color:#CD7F32;font-size:23px}
-
-.rank-thumb{
-  width:120px;height:68px;border-radius:6px;object-fit:cover;flex-shrink:0;
-  background:var(--border);
-}
-
+.rank-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:22px;color:var(--text-muted);width:36px;text-align:center;flex-shrink:0;line-height:1}
+.rank-num.top1{color:#FFD700;font-size:26px}.rank-num.top2{color:#C0C0C0;font-size:24px}.rank-num.top3{color:#CD7F32;font-size:23px}
+.rank-thumb{width:120px;height:68px;border-radius:6px;object-fit:cover;flex-shrink:0;background:var(--border)}
 .rank-info{flex:1;min-width:0}
 .rank-title{font-size:14px;font-weight:600;color:var(--text);line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;margin-bottom:4px}
 .rank-ch{font-size:12px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:6px}
 .rank-meta{display:flex;align-items:center;gap:12px}
-.rank-viewers{
-  display:inline-flex;align-items:center;gap:5px;
-  font-size:13px;font-weight:700;color:var(--green);
-  font-family:'JetBrains Mono',monospace;
-}
+.rank-viewers{display:inline-flex;align-items:center;gap:5px;font-size:13px;font-weight:700;color:var(--green);font-family:'JetBrains Mono',monospace}
 .rank-viewers::before{content:'👁'}
-.rank-live{
-  display:inline-flex;align-items:center;gap:4px;
-  font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.05em;
-}
+.rank-live{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:.05em}
 .rank-live::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.4s ease-in-out infinite}
-
-.rank-btn{
-  flex-shrink:0;padding:8px 16px;background:var(--accent);color:#fff;
-  border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;
-  font-family:'Noto Sans KR',sans-serif;transition:background .15s;white-space:nowrap;
-}
+.rank-btn{flex-shrink:0;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .15s;white-space:nowrap}
 .rank-btn:hover{background:#ff5252}
-
-/* 홍보 카드 */
-.promo-card{
-  display:flex;align-items:center;gap:14px;
-  background:linear-gradient(135deg,#1a0a2e 0%,#0e0e1e 60%,#1a1208 100%);
-  border:2px solid var(--accent2);border-radius:var(--radius);
-  padding:14px 16px;cursor:pointer;transition:transform .15s,box-shadow .15s;
-  position:relative;overflow:hidden;
-}
-.promo-card::before{
-  content:'SPONSORED';position:absolute;top:8px;right:10px;
-  font-size:9px;font-weight:700;color:var(--accent2);letter-spacing:.1em;opacity:.7;
-}
+.promo-card{display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#1a0a2e 0%,#0e0e1e 60%,#1a1208 100%);border:2px solid var(--accent2);border-radius:var(--radius);padding:14px 16px;cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden}
+.promo-card::before{content:'SPONSORED';position:absolute;top:8px;right:10px;font-size:9px;font-weight:700;color:var(--accent2);letter-spacing:.1em;opacity:.7}
 .promo-card:hover{transform:translateX(4px);box-shadow:0 4px 20px rgba(244,162,97,.2)}
 .promo-img{width:60px;height:60px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2.5px solid var(--accent2)}
 .promo-info{flex:1;min-width:0}
 .promo-name{font-size:16px;font-weight:700;color:var(--accent2);margin-bottom:4px;font-family:'JetBrains Mono',monospace;letter-spacing:.04em}
 .promo-desc{font-size:12px;color:var(--text-dim);line-height:1.6}
-.promo-btn{
-  flex-shrink:0;padding:8px 16px;background:var(--accent2);color:#000;
-  border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;
-  font-family:'Noto Sans KR',sans-serif;transition:background .15s;white-space:nowrap;
-}
+.promo-btn{flex-shrink:0;padding:8px 16px;background:var(--accent2);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Noto Sans KR',sans-serif;transition:background .15s;white-space:nowrap}
 .promo-btn:hover{background:#ffb347}
-
-/* 업데이트 바 */
-.update-bar{
-  padding:7px 16px;background:var(--surface);border-top:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
-  font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;
-}
+.update-bar{padding:7px 16px;background:var(--surface);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace}
 .update-bar .s-live{color:var(--accent);font-weight:700}
-.refresh-btn{
-  background:var(--surface2);border:1px solid var(--border);border-radius:4px;
-  color:var(--text-dim);font-size:11px;padding:3px 10px;cursor:pointer;
-  font-family:'JetBrains Mono',monospace;transition:all .15s;
-}
+.refresh-btn{background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text-dim);font-size:11px;padding:3px 10px;cursor:pointer;font-family:'JetBrains Mono',monospace;transition:all .15s}
 .refresh-btn:hover{border-color:var(--green);color:var(--green)}
-
-/* 로딩 */
 .loading-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px;gap:14px;color:var(--text-dim);font-size:13px}
 .spinner{display:inline-block;width:22px;height:22px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* 관리자 패널 */
-.admin-panel{
-  width:300px;flex-shrink:0;background:var(--surface);
-  border-left:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden;
-}
-.ap-head{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.ap-title{font-size:13px;font-weight:700;color:var(--text)}
-.ap-body{flex:1;overflow-y:auto;padding:14px}
-.ap-body::-webkit-scrollbar{width:4px}
-.ap-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.field-label{font-size:11px;font-weight:700;color:var(--text-dim);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;display:block}
-.field-group{margin-bottom:16px}
-.field-group input,.field-group select{width:100%;font-size:12px;padding:7px 10px}
-.field-group select{background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--radius);color:var(--text);outline:none;font-family:'Noto Sans KR',sans-serif}
-.keyword-list{display:flex;flex-direction:column;gap:5px;margin-bottom:8px}
-.kw-item{display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:5px;padding:6px 10px}
-.kw-text{flex:1;font-size:12px;color:var(--text)}
-.kw-del{background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:14px;padding:0 2px;transition:color .15s}
-.kw-del:hover{color:var(--accent)}
-.kw-add-row{display:flex;gap:6px}
-.kw-add-row input{flex:1;font-size:12px;padding:6px 9px}
-.ap-notice{font-size:10px;color:var(--green);line-height:1.6;padding:8px 10px;background:rgba(46,196,182,.06);border-radius:5px;border:1px solid rgba(46,196,182,.2);margin-bottom:14px}
-.divider{height:1px;background:var(--border);margin:14px 0}
-
-/* 로그인 모달 */
-.login-modal{position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9998}
-.login-box{background:var(--surface2);border:1.5px solid var(--border);border-radius:10px;padding:32px 36px;width:340px}
-.login-box h3{font-size:16px;font-weight:700;color:var(--text);margin-bottom:6px}
-.login-box p{font-size:12px;color:var(--text-muted);margin-bottom:20px}
-.login-box input{width:100%;margin-bottom:10px;font-size:13px;padding:9px 12px}
-.login-error{font-size:11px;color:var(--accent);margin-bottom:10px;min-height:16px}
-.login-btns{display:flex;gap:8px;margin-top:4px}
-
-/* TOAST */
-.toast{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);background:var(--surface3);border:1.5px solid var(--border);border-radius:6px;padding:8px 16px;font-size:12px;color:var(--text);pointer-events:none;z-index:9999;white-space:nowrap;opacity:0;transition:opacity .2s;box-shadow:0 4px 20px rgba(0,0,0,.6)}
-.toast.show{opacity:1}
 </style>
 </head>
 <body>
 <div class="app" id="app">
   <div class="loading-state"><div class="spinner"></div>Firebase 연결 중...</div>
 </div>
-<div class="toast" id="toast"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 <script>
 // ════════════════════════════════════════
-// ★ 설정
+// 설정 (민감 정보 없음 — Firebase 공개 읽기)
 // ════════════════════════════════════════
-const CHANNEL_KEY  = 'stocklive';
-const ADMIN_EMAIL  = 'yhevermore@gmail.com';
-const PROMO_POSITION = 3; // 홍보카드 위치 (3번째)
-
+const ADMIN_EMAIL    = 'yhevermore@gmail.com';
+const PROMO_POSITION = 3;
 const PROMO = {
   name: 'iRumaDory',
   desc: '강아지 이루마와 도리\n반려견 라이프 유튜브',
@@ -193,14 +80,14 @@ const PROMO = {
   url:  'https://www.youtube.com/@irumadory'
 };
 
+// Firebase 설정 (공개 정보만 — API 키 없음)
 const firebaseConfig = {
-  apiKey: "",
-  authDomain: "liveview-e6bb7.firebaseapp.com",
-  databaseURL: "https://liveview-e6bb7-default-rtdb.firebaseio.com",
-  projectId: "liveview-e6bb7",
-  storageBucket: "liveview-e6bb7.firebasestorage.app",
+  authDomain:        "liveview-e6bb7.firebaseapp.com",
+  databaseURL:       "https://liveview-e6bb7-default-rtdb.firebaseio.com",
+  projectId:         "liveview-e6bb7",
+  storageBucket:     "liveview-e6bb7.firebasestorage.app",
   messagingSenderId: "49810815057",
-  appId: "1:49810815057:web:97f8c2cf99d5a7564ba070"
+  appId:             "1:49810815057:web:97f8c2cf99d5a7564ba070"
 };
 
 // ════════════════════════════════════════
@@ -209,87 +96,77 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db   = firebase.database();
 const auth = firebase.auth();
-const settingsRef = db.ref(`settings/${CHANNEL_KEY}`);
 
-// ════════════════════════════════════════
-// 상태
-// ════════════════════════════════════════
 let isAdmin    = false;
-let settings   = { keywords: ['주식 라이브', '증시'], maxResults: 20, refreshMin: 10 };
 let rankData   = [];
 let lastUpdate = null;
 let autoTimer  = null;
 
-// ════════════════════════════════════════
-// Firebase 인증
-// ════════════════════════════════════════
 auth.onAuthStateChanged(user => {
   isAdmin = !!(user && user.email === ADMIN_EMAIL);
 });
 
 // ════════════════════════════════════════
-// Firebase 설정 리스닝
+// Firebase 실시간 랭킹 구독
 // ════════════════════════════════════════
-settingsRef.on('value', snap => {
+db.ref('stockrank').on('value', snap => {
   const data = snap.val();
-  if (data) settings = data;
+  if (!data) {
+    renderApp();
+    return;
+  }
+  rankData   = data.ranking || [];
+  lastUpdate = data.updated_at ? new Date(data.updated_at) : new Date();
   renderApp();
-  if (!rankData.length) fetchRanking();
 });
 
 // ════════════════════════════════════════
 // 앱 렌더
 // ════════════════════════════════════════
 function renderApp() {
-  document.getElementById('app').innerHTML = isAdmin ? buildAdmin() : buildViewer();
-  isAdmin ? initAdmin() : initViewer();
+  document.getElementById('app').innerHTML = buildViewer();
+  initViewer();
 }
 
-// ════════════════════════════════════════
-// 방문자 화면
-// ════════════════════════════════════════
 function buildViewer() {
-  const kw = (settings.keywords || []).join(', ');
   return `
   <header>
-    <div class="logo">LIVE<em>VIEW</em></div>
+    <div class="logo">STOCK<em>RANK</em></div>
     <div class="vline"></div>
     <div style="display:flex;align-items:center;gap:6px">
       <div class="live-dot"></div>
-      <span style="font-size:12px;color:var(--text-dim)">${kw} 라이브 랭킹</span>
+      <span style="font-size:12px;color:var(--text-dim)">주식 라이브 실시간 랭킹</span>
     </div>
     <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
       <span id="hCount" style="font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace"></span>
-      <button class="btn btn-outline btn-sm" onclick="showLoginModal()">🔧 관리자</button>
     </div>
   </header>
   <div class="content">
     <div class="ranking-wrap" id="rankingWrap">
-      <div class="loading-state"><div class="spinner"></div>라이브 랭킹 불러오는 중...</div>
+      <div class="loading-state"><div class="spinner"></div>랭킹 불러오는 중...</div>
     </div>
   </div>
   <div class="update-bar">
     <span><span class="s-live" id="liveCount">● 0</span>&nbsp;라이브 방송</span>
     <span id="updateTime" style="color:var(--text-muted)">업데이트 중...</span>
-    <button class="refresh-btn" onclick="fetchRanking()">🔄 새로고침</button>
+    <span style="font-size:10px;color:var(--text-muted)">5분마다 자동갱신</span>
   </div>`;
 }
 
 function initViewer() {
-  startAutoRefresh();
   if (rankData.length) renderRanking(rankData);
-  else fetchRanking();
 }
 
 function renderRanking(items) {
   const wrap = document.getElementById('rankingWrap');
   if (!wrap) return;
+
   if (!items.length) {
-    wrap.innerHTML = `<div class="loading-state">😶<br><br>현재 라이브 방송이 없습니다.</div>`;
+    wrap.innerHTML = `<div class="loading-state">😶<br><br>현재 라이브 방송이 없습니다.<br><span style="font-size:11px;color:var(--text-muted)">잠시 후 자동으로 업데이트됩니다.</span></div>`;
+    updateMeta(0);
     return;
   }
 
-  // 홍보 카드 HTML
   const promoHTML = `
     <div class="promo-card" onclick="window.open('${PROMO.url}','_blank')">
       <img src="${PROMO.img}" class="promo-img" alt="${PROMO.name}">
@@ -304,16 +181,15 @@ function renderRanking(items) {
   let rankNum = 1;
 
   items.forEach((item, idx) => {
-    // 3번째 위치에 홍보 카드 삽입
     if (idx === PROMO_POSITION - 1) html += promoHTML;
-
-    const numClass = rankNum === 1 ? 'top1' : rankNum === 2 ? 'top2' : rankNum === 3 ? 'top3' : '';
-    const viewers = item.viewers ? Number(item.viewers).toLocaleString() : '집계 중';
+    const numClass = rankNum===1?'top1':rankNum===2?'top2':rankNum===3?'top3':'';
+    const viewers  = item.viewers ? Number(item.viewers).toLocaleString() : '집계 중';
+    const thumb    = item.thumb || `https://i.ytimg.com/vi/${esc(item.videoId)}/mqdefault.jpg`;
 
     html += `
-      <div class="rank-card" onclick="window.open('https://www.youtube.com/watch?v=${item.videoId}','_blank')">
+      <div class="rank-card" onclick="window.open('https://www.youtube.com/watch?v=${esc(item.videoId)}','_blank')">
         <div class="rank-num ${numClass}">${rankNum}</div>
-        <img class="rank-thumb" src="${esc(item.thumb)}" alt="" loading="lazy">
+        <img class="rank-thumb" src="${esc(thumb)}" alt="" loading="lazy">
         <div class="rank-info">
           <div class="rank-title">${esc(item.title)}</div>
           <div class="rank-ch">${esc(item.channelName)}</div>
@@ -322,278 +198,28 @@ function renderRanking(items) {
             <span class="rank-live">LIVE</span>
           </div>
         </div>
-        <button class="rank-btn" onclick="event.stopPropagation();window.open('https://www.youtube.com/watch?v=${item.videoId}','_blank')">▶ YouTube</button>
+        <button class="rank-btn" onclick="event.stopPropagation();window.open('https://www.youtube.com/watch?v=${esc(item.videoId)}','_blank')">▶ YouTube</button>
       </div>`;
     rankNum++;
   });
 
-  // 홍보카드가 아직 삽입 안됐으면 맨 끝에 추가
   if (items.length < PROMO_POSITION) html += promoHTML;
-
   wrap.innerHTML = html;
-
-  // 카운트 업데이트
-  const liveEl = document.getElementById('liveCount');
-  const hCount = document.getElementById('hCount');
-  if (liveEl) liveEl.textContent = `● ${items.length}`;
-  if (hCount) hCount.textContent = `총 ${items.length}개`;
-
-  // 업데이트 시간
-  lastUpdate = new Date();
-  const timeEl = document.getElementById('updateTime');
-  if (timeEl) timeEl.textContent = `업데이트: ${lastUpdate.toLocaleTimeString('ko-KR', {hour:'2-digit',minute:'2-digit'})}`;
+  updateMeta(items.length);
 }
 
-// ════════════════════════════════════════
-// 랭킹 데이터 가져오기
-// ════════════════════════════════════════
-async function fetchRanking() {
-  const apiKey = sessionStorage.getItem('lv_api');
-  if (!apiKey) {
-    const wrap = document.getElementById('rankingWrap');
-    if (wrap) wrap.innerHTML = `<div class="loading-state">⚠️<br><br>API 키가 없습니다.<br><span style="font-size:11px;color:var(--text-muted)">관리자 → API 키 입력 후 저장하세요.</span></div>`;
-    return;
-  }
-
-  const keywords = settings.keywords || ['라이브'];
-  const maxResults = settings.maxResults || 20;
-
-  try {
-    // 1단계: 키워드별 라이브 검색
-    const searchPromises = keywords.map(kw =>
-      fetch(`https://www.googleapis.com/youtube/v3/search?${new URLSearchParams({
-        part:'snippet', q:kw, type:'video', eventType:'live',
-        maxResults: Math.ceil(maxResults / keywords.length),
-        key:apiKey, relevanceLanguage:'ko', order:'viewCount'
-      })}`).then(r=>r.json())
-    );
-    const searchResults = await Promise.all(searchPromises);
-
-    // 영상 목록 합치기 (중복 제거)
-    const videoMap = new Map();
-    searchResults.forEach(result => {
-      (result.items || []).forEach(item => {
-        if (!videoMap.has(item.id.videoId)) {
-          videoMap.set(item.id.videoId, {
-            videoId:     item.id.videoId,
-            channelId:   item.snippet.channelId,
-            channelName: item.snippet.channelTitle,
-            title:       item.snippet.title,
-            thumb:       item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-            viewers:     0
-          });
-        }
-      });
-    });
-
-    if (!videoMap.size) { renderRanking([]); return; }
-
-    // 2단계: 시청자 수 가져오기
-    const videoIds = [...videoMap.keys()].join(',');
-    const statsRes = await fetch(`https://www.googleapis.com/youtube/v3/videos?${new URLSearchParams({
-      part:'liveStreamingDetails', id:videoIds, key:apiKey
-    })}`);
-    const statsData = await statsRes.json();
-
-    (statsData.items || []).forEach(item => {
-      const v = videoMap.get(item.id);
-      if (v && item.liveStreamingDetails?.concurrentViewers) {
-        v.viewers = parseInt(item.liveStreamingDetails.concurrentViewers) || 0;
-      }
-    });
-
-    // 시청자 수 순 정렬
-    rankData = [...videoMap.values()].sort((a,b) => b.viewers - a.viewers);
-    renderRanking(rankData);
-
-  } catch(err) {
-    const wrap = document.getElementById('rankingWrap');
-    if (wrap) wrap.innerHTML = `<div class="loading-state">⚠️<br><br>${esc(err.message)}</div>`;
+function updateMeta(count) {
+  const liveEl  = document.getElementById('liveCount');
+  const hCount  = document.getElementById('hCount');
+  const timeEl  = document.getElementById('updateTime');
+  if (liveEl) liveEl.textContent = `● ${count}`;
+  if (hCount) hCount.textContent = `총 ${count}개`;
+  if (timeEl && lastUpdate) {
+    timeEl.textContent = `업데이트: ${lastUpdate.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}`;
   }
 }
 
-function startAutoRefresh() {
-  if (autoTimer) clearInterval(autoTimer);
-  const min = settings.refreshMin || 10;
-  autoTimer = setInterval(fetchRanking, min * 60 * 1000);
-}
-
-// ════════════════════════════════════════
-// 관리자 화면
-// ════════════════════════════════════════
-function buildAdmin() {
-  const kws = (settings.keywords || []);
-  return `
-  <header>
-    <div class="logo">LIVE<em>VIEW</em></div>
-    <div class="vline"></div>
-    <span class="admin-badge">🔧 ADMIN</span>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
-      <button class="btn btn-green" onclick="saveSettings()">💾 설정 저장</button>
-      <button class="btn btn-outline btn-sm" onclick="doLogout()">로그아웃</button>
-    </div>
-  </header>
-  <div class="content">
-    <div class="ranking-wrap" id="rankingWrap">
-      ${rankData.length ? '' : '<div class="loading-state"><div class="spinner"></div>미리보기 로딩 중...</div>'}
-    </div>
-    <div class="admin-panel">
-      <div class="ap-head">
-        <span class="ap-title">⚙️ 설정</span>
-        <button class="btn btn-red btn-sm" onclick="fetchRanking()">🔄 새로고침</button>
-      </div>
-      <div class="ap-body">
-        <div class="ap-notice">
-          ✅ Firebase 연동됨<br>
-          설정 저장 → 즉시 방문자에게 반영
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">API KEY</span>
-          <input type="password" id="apiKeyInput" placeholder="YouTube Data API v3 키" value="${sessionStorage.getItem('lv_api')||''}">
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="field-group">
-          <span class="field-label">검색 키워드</span>
-          <div class="keyword-list" id="kwList">
-            ${kws.map((k,i) => `
-              <div class="kw-item">
-                <span class="kw-text">${esc(k)}</span>
-                <button class="kw-del" onclick="delKeyword(${i})">×</button>
-              </div>`).join('')}
-          </div>
-          <div class="kw-add-row">
-            <input type="text" id="kwInput" placeholder="키워드 추가 (예: 잠실)" onkeydown="if(event.key==='Enter')addKeyword()">
-            <button class="btn btn-red btn-sm" onclick="addKeyword()">추가</button>
-          </div>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="field-group">
-          <span class="field-label">최대 표시 개수</span>
-          <select id="maxResults">
-            ${[10,20,30,50].map(n=>`<option value="${n}" ${settings.maxResults==n?'selected':''}>${n}개</option>`).join('')}
-          </select>
-        </div>
-
-        <div class="field-group">
-          <span class="field-label">자동 갱신 주기</span>
-          <select id="refreshMin">
-            ${[5,10,15,30].map(n=>`<option value="${n}" ${settings.refreshMin==n?'selected':''}>${n}분</option>`).join('')}
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="update-bar">
-    <span><span class="s-live" id="liveCount">● ${rankData.length}</span>&nbsp;라이브 방송</span>
-    <span id="updateTime">${lastUpdate ? '업데이트: '+lastUpdate.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) : '업데이트 전'}</span>
-  </div>`;
-}
-
-function initAdmin() {
-  document.getElementById('apiKeyInput').addEventListener('change', () => {
-    sessionStorage.setItem('lv_api', document.getElementById('apiKeyInput').value.trim());
-  });
-  if (rankData.length) renderRanking(rankData);
-  else fetchRanking();
-}
-
-let tempKeywords = [...(settings.keywords || [])];
-
-function addKeyword() {
-  const inp = document.getElementById('kwInput');
-  const kw = inp.value.trim();
-  if (!kw) return;
-  if (!tempKeywords.includes(kw)) { tempKeywords.push(kw); renderKeywordList(); }
-  inp.value = '';
-}
-
-function delKeyword(i) {
-  tempKeywords.splice(i, 1);
-  renderKeywordList();
-}
-
-function renderKeywordList() {
-  const list = document.getElementById('kwList');
-  if (!list) return;
-  list.innerHTML = tempKeywords.map((k,i) => `
-    <div class="kw-item">
-      <span class="kw-text">${esc(k)}</span>
-      <button class="kw-del" onclick="delKeyword(${i})">×</button>
-    </div>`).join('');
-}
-
-function saveSettings() {
-  const apiKey = document.getElementById('apiKeyInput').value.trim();
-  if (apiKey) sessionStorage.setItem('lv_api', apiKey);
-
-  settings = {
-    keywords:   tempKeywords,
-    maxResults: parseInt(document.getElementById('maxResults').value),
-    refreshMin: parseInt(document.getElementById('refreshMin').value)
-  };
-
-  settingsRef.set(settings)
-    .then(() => { toast('✅ 설정 저장 완료! 즉시 반영됩니다.'); fetchRanking(); })
-    .catch(err => toast(`❌ 저장 실패: ${err.message}`));
-}
-
-// ════════════════════════════════════════
-// 로그인 모달
-// ════════════════════════════════════════
-function showLoginModal() {
-  if (auth.currentUser && auth.currentUser.email === ADMIN_EMAIL) { isAdmin=true; renderApp(); return; }
-  const modal = document.createElement('div');
-  modal.className = 'login-modal';
-  modal.id = 'loginModal';
-  modal.innerHTML = `
-    <div class="login-box">
-      <h3>🔧 관리자 로그인</h3>
-      <p>Firebase 계정으로 로그인하세요.</p>
-      <input type="email" id="loginEmail" placeholder="이메일" value="${ADMIN_EMAIL}">
-      <input type="password" id="loginPw" placeholder="비밀번호" onkeydown="if(event.key==='Enter')doLogin()">
-      <div class="login-error" id="loginError"></div>
-      <div class="login-btns">
-        <button class="btn btn-red" style="flex:1" onclick="doLogin()">로그인</button>
-        <button class="btn btn-outline" onclick="closeLoginModal()">취소</button>
-      </div>
-    </div>`;
-  document.body.appendChild(modal);
-  setTimeout(() => document.getElementById('loginPw') && document.getElementById('loginPw').focus(), 100);
-}
-
-function closeLoginModal() { const m=document.getElementById('loginModal'); if(m) m.remove(); }
-
-async function doLogin() {
-  const email = document.getElementById('loginEmail').value.trim();
-  const pw    = document.getElementById('loginPw').value;
-  const errEl = document.getElementById('loginError');
-  if (errEl) errEl.textContent = '';
-  try {
-    await auth.signInWithEmailAndPassword(email, pw);
-    closeLoginModal(); isAdmin=true; renderApp(); toast('관리자 모드 ✅');
-  } catch(err) {
-    if (errEl) errEl.textContent = '이메일 또는 비밀번호가 틀렸습니다.';
-  }
-}
-
-function doLogout() {
-  auth.signOut().then(() => { isAdmin=false; renderApp(); toast('로그아웃 완료'); });
-}
-
-// ════════════════════════════════════════
-// 헬퍼
-// ════════════════════════════════════════
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
-let _tt;
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>el.classList.remove('show'),2800)}
-window.showLoginModal=showLoginModal;window.doLogin=doLogin;window.closeLoginModal=closeLoginModal;
-window.doLogout=doLogout;window.fetchRanking=fetchRanking;window.saveSettings=saveSettings;
-window.addKeyword=addKeyword;window.delKeyword=delKeyword;window.renderKeywordList=renderKeywordList;
 </script>
 </body>
 </html>
